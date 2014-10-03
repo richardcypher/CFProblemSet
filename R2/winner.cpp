@@ -7,27 +7,31 @@ using namespace std;
 
 int main() {
     int n,maxscore;
-    string winner;
     cin >>n;
-    map<string,int> rounds;
-    maxscore = -1000;
-    winner = "nobody";
-    for (int i = 0 ;i <n;i++) {
-        string round;
-        istringstream is(round);
+    std::map<string, int> rounds;
+    string* names = new string[n];
+    int* scores = new int[n];
+    for (int i = 0 ;i < n;i++) {
         string name;
         int score;
-        is>>name>>score;
-        if (rounds.find (name) != rounds.end())
-            rounds[name] += score;
+        cin>>name>>score;
+        names[i] = name;
+        if(rounds.find(name) == rounds.end())
+        	rounds[name] = score;
         else
-            rounds[name] = score;
-        if (rounds[name] > maxscore)
-        {
-            maxscore = rounds[name];
-            winner = name;
+        	rounds[name] += score;
+        scores[i] = rounds[name];
+    }
+    maxscore = 0;
+    std::map<string, int>::iterator it = rounds.begin();
+    for (; it != rounds.end();it++)
+        if (it->second > maxscore)
+            maxscore = it->second;
+    for (int i = 0 ;i < n; i++) {
+        if (rounds[names[i]] == maxscore && scores[i]>= maxscore) {
+                cout<<names[i]<<endl;
+                return 0;
         }
     }
-    cout<<winner<<endl;
     return 0;
 }
